@@ -28,6 +28,7 @@
       href="{% static 'css/services.css' %}"
     />
     <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basket.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/hover.css' %}" />
 
     <title>Document</title>
@@ -43,7 +44,7 @@
           <nav class="header__menu menu">
             <ul class="menu__list">
               <li class="menu__item">
-                <a id="MainLink" href="" class="menu__link menu__link_active"
+                <a id="MainLink" href="{% url 'main:index' %}" class="menu__link menu__link_active"
                   >Home</a
                 >
               </li>
@@ -56,12 +57,15 @@
                 <a href="#contacts" class="menu__link">Вход</a>
               </li>
               <li class="menu__item">
-                <a href="" class="menu__link">Корзина</a>
+                <a href="{% url 'main:basket' %}" class="menu__link">Корзина</a>
               </li>
-              <img
-                src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
-                alt="basket"
-              />
+              <a href="{% url 'main:basket' %}">
+                <img
+                  src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
+                  alt="basket"
+                />
+              </a>
+              
             </ul>
           </nav>
         </div>

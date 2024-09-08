@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+
+    <div class="page__basket _container">
+        <div class="basket__content">
+
+                {% for service in services %}
+                    <div class="basket__row">
+                        <div class="basket__card item-basket">
+
+                                <div class="item-basket__img">
+                                    <img src="{{ service.img_url }}" alt="{{ service.title }}" />
+                                </div>
+                                <h3 class="item-basket__title">{{ service.title }}</h3>
+                          
+                           <div class="item-basket__price-button">
+                            <div class="item-basket__price">{{ service.price }}</div>
+                            <a href="{% url 'main:service_detail' service.id %}" class="item-basket__button button-page">Подробнее</a>
+                           </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+
+       
+    </div>
+
+{% endblock body %}

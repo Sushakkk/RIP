@@ -101,3 +101,10 @@ def service_detail(request, id):
     
     context = {'service': service}
     return render(request, 'card.html', context)
+
+
+def basket_view(request):
+    
+    context = {'services': services}
+    return render(request, 'basket.html', context)
+
