@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/null.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/header.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/services.css' %}"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/hover.css' %}" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <div class="header__container _container">
+          <div class="header__logo">flexwork</div>
+          <div class="header__burger">
+            <span></span>
+          </div>
+          <nav class="header__menu menu">
+            <ul class="menu__list">
+              <li class="menu__item">
+                <a id="MainLink" href="" class="menu__link menu__link_active"
+                  >Home</a
+                >
+              </li>
+              <li class="menu__item">
+                <a id="ServicesLink" href="#services" class="menu__link"
+                  >Услуги</a
+                >
+              </li>
+              <li class="menu__item">
+                <a href="#contacts" class="menu__link">Вход</a>
+              </li>
+              <li class="menu__item">
+                <a href="" class="menu__link">Корзина</a>
+              </li>
+              <img
+                src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
+                alt="basket"
+              />
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main id="main" class="page">
+
+      {% block body %}
+      {% endblock body %}
+    </main>
+     
+    </div>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+.page__main-block {
+
+	display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+   
+
+
+}
+
+.main-content{
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    
+
+}
+
+.title_main{
+    font-size: 1.5rem;
+    font-weight: bold; /* Сделаем метку жирным шрифтом */
+    margin: 30px 0;
+    
+}
+.main-block__body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 30px;
+}
+
+
+
+
+.main-block__details p {
+    margin: 20px 0; 
+    padding: 5px 0; /* Добавляем вертикальные отступы */
+}
+
+.detail-label {
+    font-weight: bold; /* Сделаем метку жирным шрифтом */
+    margin-right: 5px; /* Добавляем отступ между меткой и значением */
+}
+
+
+.price{
+    color: var(--main_color);
+    font-weight: bold; /* Сделаем метку жирным шрифтом */
+}
+
+.main-block__image {
+    max-width: 60%;
+    height: auto;
+}
+
+
+.main-block__image img {
+
+    max-width: 100%; /* ограничить ширину изображения контейнером */
+    height: auto; /* поддерживать соотношение сторон */
+    border-radius: 10px; /* добавление округлости к углам, если требуется */
+    border: 2px solid var(--border);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+

@@ -1,0 +1,177 @@
+.page {
+    margin-top: 170px;
+	min-height: 100vh;
+	height: auto;
+}
+.page__services {
+	display: flex;
+}
+
+.services__content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 40px;
+    
+}
+
+.services__cards {
+    display: grid; /* Используем grid */
+    grid-template-columns: repeat(3, 1fr); /* Создаем три колонки одинаковой ширины */
+    gap: 20px; /* Задаем промежутки между карточками */
+}
+
+.services__column {
+    box-sizing: border-box; 
+}
+.services__card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid var(--border);
+    padding: 20px;
+    gap: 10px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: var(--base);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 300px;
+    height: 400px;
+}
+.item-services {
+}
+.item-service__img {
+    width: 100%;
+    height: auto; /* Позволяет изображению сохранять свои пропорции */
+    overflow: hidden; /* Убирает лишние части изображения */
+    margin: auto; /* Отступ для визуального разделения */
+}
+
+.item-service__img img {
+    width: 100%;
+    height: auto; /* Сохраняет пропорции изображения */
+    object-fit: contain; /* Изображение сохраняет пропорции и помещается в контейнер */
+}
+.item-service__title {
+    line-height: 1.25; /* Увеличенный межстрочный интервал */
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+.item-service__price{
+    margin-bottom: 10px;
+    font-size: 1.125rem;
+    font-weight: 500;
+
+}
+.item-service__button {
+   
+}
+
+.button-page{
+
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     color: white;
+     background-color: var(--main_color);
+     line-height: 142%;
+     padding: 5px 20px;
+     text-align: center;
+     border-radius: 7px;
+     flex-wrap: nowrap;
+     cursor: pointer;
+     font-size: 1.125rem;
+
+}
+
+
+.services__search {
+    display: flex;
+    flex: 0 1 35%;
+    height: 50vh;
+    min-height: 420px;
+    min-width: 220px;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff; /* Цвет фона */
+    padding: 20px 20px;
+    border-radius: 20px;
+
+}
+
+
+.services__search input {
+  padding: 10px;
+  appearance: none; /* Убирает стандартную стрелку */
+  -moz-appearance: none; /* Для Firefox */
+  -webkit-appearance: none; /* Для Safari и Chrome */
+  width: 100%; /* Ширина на 100% */
+  box-sizing: border-box; /* Учитываем padding и border в ширину */
+  position: relative; /* Для правильного позиционирования */
+}
+
+/* Дополнительные стили для select */
+.services__search select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    appearance: none; /* Убирает стандартную стрелку */
+    -moz-appearance: none; /* Для Firefox */
+    -webkit-appearance: none; /* Для Safari и Chrome */
+
+    width: 100%; /* Ширина на 100% */
+    box-sizing: border-box; /* Учитываем padding и border в ширину */
+    position: relative; /* Для правильного позиционирования */
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23666" d="M0 0l5 5 5-5H0z"/></svg>') no-repeat right 10px center; /* Ваша стрелочка */
+
+    background-size: 12px; /* Размер стрелочки */
+    padding-right: 30px; /* Пространство для стрелочки */
+}
+
+
+.services__text{
+    color:var(--text);
+    margin: 20px 0px 10px 0px;
+}
+
+/* .services__search option {
+    color: black;
+} */
+
+
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    max-width: 300px; /* Настройте под нужный размер */
+    background-color: #fff; /* Добавляем белый фон для контейнера */
+  }
+  
+  .search-input {
+    border: none;
+    padding: 10px;
+    flex: 1;
+    font-size: 16px;
+    outline: none;
+    background-color: transparent; /* Прозрачный фон */
+  }
+  
+  .search-button {
+    background-color: var(--main_color);
+    border: none;
+    width: 40px;
+    height: 100%; /* Высота кнопки совпадает с высотой поля */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .search-button img {
+   
+  }
+  

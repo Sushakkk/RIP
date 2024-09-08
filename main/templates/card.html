@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="page__main-block _container">
+    <div class="main-content">
+        <div class="main-block__body">
+            <h1 class="main-block__title title_main">{{ service.title }}</h1>
+            <div class="main-block__image">
+                <img src="{{ service.img_url }}" alt="{{ service.title }}" />
+            </div>
+           
+            
+            <div class="main-block__details">
+                <p><span class="detail-label">Дата:</span> с {{ service.start_date|date:"d.m.Y в H:i" }} по {{ service.end_date|date:"d.m.Y в H:i" }}</p>
+                <p><span class="detail-label">Описание:</span> {{ service.description }}</p>
+
+                <p><span class="detail-label">Компания:</span> {{ service.company }}</p>
+                <p><span class="detail-label">Категория:</span> {{ service.category }}</p>
+                <p><span class="detail-label">Адрес:</span> {{ service.address }}</p>
+                <p><span class="detail-label">Цена:</span> <span class="price">{{ service.price }}</span></p>
+            </div>
+            <button class="main-block__button button-page">В Корзину</button>
+
+        </div>
+    </div>
+</div>
+{% endblock body %}

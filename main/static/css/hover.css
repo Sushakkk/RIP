@@ -1,0 +1,26 @@
+body a, body button {
+	
+	transition: all 0.3s ease 0s;
+
+  }
+
+  .menu__link {
+    display: inline-block; /* Обеспечивает работу transform */
+    transition: all 0.4s ease;
+    flex-wrap: nowrap;
+  }
+
+
+@media (hover: hover) {
+	 main a:hover,  header a:hover, body button:hover {
+	  transform: scale(1.1);
+	}
+    .menu__link:hover,  .menu__link.active {
+        text-decoration: underline;
+        transform: scale(1.1);
+        /* Применяем увеличение при наведении */
+      }
+  }
+
+
+  
