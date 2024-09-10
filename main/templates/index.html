@@ -13,8 +13,8 @@
                             <div class="item-service__img">
                                 <img src="{{ service.img_url }}" alt="{{ service.title }}" />
                             </div>
-                            <div class="item-service__price">{{ service.price }}</div>
-                            <a href="{% url 'main:service_detail' service.id %}" class="item-service__button button-page">Подробнее</a>
+                            <div class="item-service__price">{{ service.price }}р</div>
+                            <a href="{% url 'main:service' service.id %}" class="item-service__button button-page">Подробнее</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -22,29 +22,31 @@
         </div>
 
         <div class="services__search">
-            <div class="search-container">
-            
-                <input type="text" placeholder="Поиск" class="search-input" />
-                <button type="submit" class="search-button">
-                    <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
-                </button>
-            </div>
+            <form method="post" action="{% url 'main:index' %}">
+                {% csrf_token %}
+                <div class="search-container">
+                    <input type="text" name="query" placeholder="Поиск" class="search-input" />
+                    <button type="submit" class="search-button">
+                        <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
+                    </button>
+                </div>
+            </form>
         
 
             <!-- Выпадающий список для цены -->
             <div class="services__text">Цена</div>
 
-            <select>
+            <select  name="price">
                 <option value="" disabled selected>Любая цена</option>
                 
-                <option value="low">Низкая</option>
-                <option value="medium">Средняя</option>
-                <option value="high">Высокая</option>
+                <option value="low">до 1000р</option>
+                <option value="medium">от 1000р до 5000р</option>
+                <option value="high">выше 500р</option>
             </select>
 
             <!-- Выпадающий список для компании -->
             <div class="services__text">Компания</div>
-            <select>
+            <select name="company">
                 <option value="" disabled selected>Компания</option>
                 {% for service in services %}
                 <option value="{{ service.company }}">{{ service.company}}</option>
@@ -53,7 +55,7 @@
 
             <!-- Выпадающий список для категории -->
             <div class="services__text">Категория</div>
-            <select>
+            <select name="category">
                 <option value="" disabled selected>Категория</option>
                 {% for service in services %}
                 <option value="{{ service.category }}">{{ service.category}}</option>

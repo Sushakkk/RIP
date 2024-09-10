@@ -3,13 +3,12 @@ from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 
 
-
 services = [
    {
             'id': 1,
             'title': 'Услуги по предоставлению письменных консультаций по направлению Социальная работа',
-            'img_url': 'http://127.0.0.1:9000/flexwork/489cafd9-448c-5ecc-926e-30708a30f5a7.jpeg',
-            'price': '500р',
+            'img_url': 'http://127.0.0.1:9000/flexwork/1.jpeg',
+            'price': '500',
             'description': 'Письменные консультации по вопросам социальной работы. Опытные специалисты помогут вам разобраться в сложных вопросах.',
             'company': 'Социальные Решения',
             'category': 'Консультации',
@@ -20,8 +19,8 @@ services = [
     {
         'id': 2,
         'title': 'Юридическая консультация по семейным делам',
-        'img_url': 'http://127.0.0.1:9000/flexwork/lawyer.jpeg',
-        'price': '1000р',
+        'img_url': 'http://127.0.0.1:9000/flexwork/2.jpeg',
+        'price': '1000',
         'description': 'Юридическая помощь по вопросам семейного права, включая разводы, опеку, алименты и другие аспекты.',
         'company': 'ЮрПомощь',
         'category': 'Юридические услуги',
@@ -32,8 +31,8 @@ services = [
     {
         'id': 3,
         'title': 'Финансовое планирование и консультации',
-        'img_url': 'http://127.0.0.1:9000/flexwork/finance.jpg',
-        'price': '1500р',
+        'img_url': 'http://127.0.0.1:9000/flexwork/3.jpg',
+        'price': '1500',
         'description': 'Профессиональные услуги по финансовому планированию, инвестициям и управлению личными финансами.',
         'company': 'ФинансГрупп',
         'category': 'Финансовые услуги',
@@ -44,8 +43,8 @@ services = [
     {
         'id': 4,
         'title': 'Консультации по медицинским вопросам',
-        'img_url': 'http://127.0.0.1:9000/flexwork/medical.webp',
-        'price': '800р',
+        'img_url': 'http://127.0.0.1:9000/flexwork/4.webp',
+        'price': '800',
         'description': 'Консультации и рекомендации по медицинским вопросам от опытных врачей и специалистов.',
         'company': 'МедЦентр',
         'category': 'Медицинские услуги',
@@ -56,8 +55,8 @@ services = [
     {
         'id': 5,
         'title': 'Курсы по программированию для начинающих',
-        'img_url': 'http://127.0.0.1:9000/flexwork/Programmer.jpg',
-        'price': '2000р',
+        'img_url': 'http://127.0.0.1:9000/flexwork/5.jpg',
+        'price': '2000',
         'description': 'Обучение основам программирования с нуля. Практические занятия и теоретические знания для старта в IT.',
         'company': 'IT Академия',
         'category': 'Образование',
@@ -68,8 +67,8 @@ services = [
     {
         'id': 6,
         'title': 'Профессиональные тренинги по лидерству',
-        'img_url': 'http://127.0.0.1:9000/flexwork/leader.png',
-        'price': '2500р',
+        'img_url': 'http://127.0.0.1:9000/flexwork/6.png',
+        'price': '2500',
         'description': 'Интенсивные тренинги по развитию лидерских качеств и управленческих навыков.',
         'company': 'ЛидерШкола',
         'category': 'Тренинги',
@@ -80,30 +79,32 @@ services = [
 ]
 
 
+def GetServices(request):
+    if request.method == 'POST':
+        query = request.POST.get('query', '').strip()
+        if query:
+            filtered_services = [
+                service for service in services
+                if query.lower() in service['title'].lower() or query.lower() in service['description'].lower()
+            ]
+        else:
+            filtered_services = services
+        return render(request, 'index.html', {'services': filtered_services})
+    else:
+        return render(request, 'index.html', {'services': services})
+    
+    
 
-def services_view(request):
-    
-    context = {'services': services}
-    return render(request, 'index.html', context)
-
-def service_detail(request, id):
-    
-    # # Получаем услугу по id
-    # service = get_object_or_404(services, id=id)
-    
-    
-     # Находим услугу по id
+def GetService(request, id):
     service = next((item for item in services if item['id'] == id), None)
-    
     if service is None:
         # Обработка случая, когда услуга не найдена
         return render(request, '404.html', status=404)
-    
     context = {'service': service}
     return render(request, 'card.html', context)
 
 
-def basket_view(request):
+def GetBasket(request):
     
     context = {'services': services}
     return render(request, 'basket.html', context)

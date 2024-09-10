@@ -5,8 +5,11 @@ from main import views
 app_name = 'main'
 
 urlpatterns = [
-    path('', views.services_view, name='index'),
-    path('service/<int:id>/', views.service_detail, name='service_detail'),
-    path('basket/', views.basket_view, name='basket'),
+    path('', views.GetServices, name='index'),
+    path('service/<int:id>/', views.GetService, name='service'),
+    path('basket/', views.GetBasket, name='basket'),
+    
+    
+    
     
 ]
