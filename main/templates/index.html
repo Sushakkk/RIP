@@ -1,68 +1,52 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block body %}
 
-{% block body %}
-
-    <div class="page__services _container">
-        <div class="services__content">
-            <div class="services__cards">
-                {% for service in services %}
-                    <div class="services__column">
-                        <div class="services__card item-services">
-                            <h3 class="item-service__title">{{ service.title }}</h3>
-                            <div class="item-service__img">
-                                <img src="{{ service.img_url }}" alt="{{ service.title }}" />
-                            </div>
-                            <div class="item-service__price">{{ service.price }}р</div>
-                            <a href="{% url 'main:service' service.id %}" class="item-service__button button-page">Подробнее</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+<div class="page__services _container">
+  <div class="services__content">
+    <div class="services__search">
+        <form method="get" action="{% url 'main:index' %}">
+          {% csrf_token %}
+          <div class="search-container">
+            <input
+              type="text"
+              name="selected_services"
+              placeholder="Поиск"
+              class="search-input"
+              value="{{ data.selected_services }}"
+            />
+            <button type="submit" class="search-button">
+              <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
+            </button>
+          </div>
+        </form>
+        <a href="{% url 'main:basket' %}">
+          <img
+          class="basket__img"
+            src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
+            alt="basket"
+          />
+        </a>
+      </div>
+    <div class="services__cards">
+      {% for service in data.services %}
+      <div class="services__column">
+        <div class="services__card item-services">
+          <h3 class="item-service__title">{{ service.title }}</h3>
+          <div class="item-service__img">
+            <img src="{{ service.img_url }}" alt="{{ service.title }}" />
+          </div>
+          <a
+            href="{% url 'main:service' service.id %}"
+            class="item-service__button button-page"
+            >Подробнее</a
+          >
         </div>
-
-        <div class="services__search">
-            <form method="post" action="{% url 'main:index' %}">
-                {% csrf_token %}
-                <div class="search-container">
-                    <input type="text" name="query" placeholder="Поиск" class="search-input" />
-                    <button type="submit" class="search-button">
-                        <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
-                    </button>
-                </div>
-            </form>
-        
-
-            <!-- Выпадающий список для цены -->
-            <div class="services__text">Цена</div>
-
-            <select  name="price">
-                <option value="" disabled selected>Любая цена</option>
-                
-                <option value="low">до 1000р</option>
-                <option value="medium">от 1000р до 5000р</option>
-                <option value="high">выше 500р</option>
-            </select>
-
-            <!-- Выпадающий список для компании -->
-            <div class="services__text">Компания</div>
-            <select name="company">
-                <option value="" disabled selected>Компания</option>
-                {% for service in services %}
-                <option value="{{ service.company }}">{{ service.company}}</option>
-                {% endfor %}
-            </select>
-
-            <!-- Выпадающий список для категории -->
-            <div class="services__text">Категория</div>
-            <select name="category">
-                <option value="" disabled selected>Категория</option>
-                {% for service in services %}
-                <option value="{{ service.category }}">{{ service.category}}</option>
-                {% endfor %}
-            </select>
-           
-        </div>
+      </div>
+      {% endfor %}
     </div>
+
+    
+
+  </div>
+</div>
 
 {% endblock body %}

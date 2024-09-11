@@ -2,30 +2,49 @@
 {% load static %}
 
 {% block body %}
-
-    <div class="page__basket _container">
-        <div class="basket__content">
-
-                {% for service in services %}
-                    <div class="basket__row">
-                        <div class="basket__card item-basket">
-
-                                <div class="item-basket__img">
-                                    <img src="{{ service.img_url }}" alt="{{ service.title }}" />
-                                </div>
-                                <h3 class="item-basket__title">{{ service.title }}</h3>
-                          
-                           <div class="item-basket__price-button">
-                            <div class="item-basket__price">{{ service.price }}</div>
-                            <a href="{% url 'main:service' service.id %}" class="item-basket__button button-page">Подробнее</a>
-                           </div>
-                        </div>
-                    </div>
-                {% endfor %}
-
-        </div>
-
-       
+<div class="page__basket _container">
+  <div class="basket__content">
+    <div class="basket__title main-block__container-details">
+      <div class="title_main">Деятельности:</div>
+      <div class="">{{ data.count }}</div>
     </div>
 
+    <p><span class="basket_fio detail-label">Самозанятый:</span> {{ data.fio }}</p>
+    <div class="basket__cards">
+
+    {% for service in data.services %}
+   
+    <div class="basket__row">
+        <div class="basket__card item-basket">
+          <div class="item-basket__img">
+            <img src="{{ service.img_url }}" alt="{{ service.title }}" />
+          </div>
+          <h3 class="item-basket__title">{{ service.title }}</h3>
+  
+          
+          {% if service.id == data.main %}
+          <img
+            class="basket__img"
+            src="http://127.0.0.1:9000/flexwork/main_service.svg"
+            alt="basket"
+          />
+          {% else %}
+          <div></div>
+          {% endif %}
+  
+          <div class="item-basket__price-button">
+            <a
+              href="{% url 'main:service' service.id %}"
+              class="item-basket__button button-page"
+              >Подробнее</a
+            >
+          </div>
+        </div>
+      </div>
+   
+    {% endfor %}
+</div>
+  </div>
+</div>
 {% endblock body %}
+

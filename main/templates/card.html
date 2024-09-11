@@ -12,13 +12,11 @@
            
             
             <div class="main-block__details">
-                <p><span class="detail-label">Дата:</span> с {{ service.start_date|date:"d.m.Y в H:i" }} по {{ service.end_date|date:"d.m.Y в H:i" }}</p>
-                <p><span class="detail-label">Описание:</span> {{ service.description }}</p>
-
-                <p><span class="detail-label">Компания:</span> {{ service.company }}</p>
+                <div class="main-block__container-details">
+                    <div><span class="detail-label">Описание:</span></div>
+                    <div>{{ service.description }}</div>
+                </div>
                 <p><span class="detail-label">Категория:</span> {{ service.category }}</p>
-                <p><span class="detail-label">Адрес:</span> {{ service.address }}</p>
-                <p><span class="detail-label">Цена:</span> <span class="price">{{ service.price }}р</span></p>
             </div>
             <button class="main-block__button button-page">В Корзину</button>
 

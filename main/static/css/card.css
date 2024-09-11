@@ -19,9 +19,8 @@
 }
 
 .title_main{
-    font-size: 1.5rem;
+    font-size:  2.25rem;
     font-weight: bold; /* Сделаем метку жирным шрифтом */
-    margin: 30px 0;
     
 }
 .main-block__body {
@@ -30,6 +29,9 @@
     justify-content: space-between;
     flex-direction: column;
     gap: 30px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 50px 30px 30px 30px;
 }
 
 
@@ -38,11 +40,12 @@
 .main-block__details p {
     margin: 20px 0; 
     padding: 5px 0; /* Добавляем вертикальные отступы */
+    line-height: 1.25; /* Увеличенный межстрочный интервал */
 }
 
 .detail-label {
     font-weight: bold; /* Сделаем метку жирным шрифтом */
-    margin-right: 5px; /* Добавляем отступ между меткой и значением */
+    margin-right: 7px; /* Добавляем отступ между меткой и значением */
 }
 
 
@@ -64,6 +67,11 @@
     border-radius: 10px; /* добавление округлости к углам, если требуется */
     border: 2px solid var(--border);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-block__container-details{
+    display: flex;
+    gap:7px
 }
 
 

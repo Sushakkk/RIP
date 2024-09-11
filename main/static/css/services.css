@@ -5,20 +5,25 @@
 }
 .page__services {
 	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .services__content {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding-right: 40px;
+    flex-direction: column;
+    gap:40px;
+    width: 100%;   
     
 }
 
 .services__cards {
-    display: grid; /* Используем grid */
-    grid-template-columns: repeat(3, 1fr); /* Создаем три колонки одинаковой ширины */
-    gap: 20px; /* Задаем промежутки между карточками */
+     display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    /* display: flex;
+    flex-wrap: wrap; */
+    /* justify-content: space-around; */
+    gap: 50px; /* Задаем промежутки между карточками */
 }
 
 .services__column {
@@ -37,14 +42,18 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     min-height: 300px;
     height: 400px;
+    max-width: 300px;
+    min-width: 250px;
 }
 .item-services {
 }
 .item-service__img {
     width: 100%;
-    height: auto; /* Позволяет изображению сохранять свои пропорции */
+    height: auto; 
     overflow: hidden; /* Убирает лишние части изображения */
     margin: auto; /* Отступ для визуального разделения */
+    max-width: 250px;
+    max-height: 160px;
 }
 
 .item-service__img img {
@@ -56,6 +65,7 @@
     line-height: 1.25; /* Увеличенный межстрочный интервал */
     font-size: 1.125rem;
     font-weight: 600;
+    padding-top: 10px;
 }
 .item-service__price{
     margin-bottom: 10px;
@@ -87,16 +97,19 @@
 
 .services__search {
     display: flex;
-    flex: 0 1 35%;
-    height: 50vh;
-    min-height: 420px;
-    min-width: 220px;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff; /* Цвет фона */
-    padding: 20px 20px;
-    border-radius: 20px;
+    justify-content: space-between;
+    align-items: center;
+   
 
+}
+
+.basket__img{
+    padding: 12px;
+    border-radius: 50%;
+    background-color: white;
+    width: 65px;
+    height: 65px;
+   
 }
 
 

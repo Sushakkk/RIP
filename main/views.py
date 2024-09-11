@@ -1,97 +1,129 @@
 # main/views.py
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from datetime import datetime
 
 
 services = [
-   {
-            'id': 1,
-            'title': 'Услуги по предоставлению письменных консультаций по направлению Социальная работа',
-            'img_url': 'http://127.0.0.1:9000/flexwork/1.jpeg',
-            'price': '500',
-            'description': 'Письменные консультации по вопросам социальной работы. Опытные специалисты помогут вам разобраться в сложных вопросах.',
-            'company': 'Социальные Решения',
-            'category': 'Консультации',
-            'start_date': datetime.strptime('2024-09-10T00:00:00', '%Y-%m-%dT%H:%M:%S'),
-            'end_date': datetime.strptime('2024-09-15T18:00:00', '%Y-%m-%dT%H:%M:%S'),
-            'address': 'г. Москва, ул. Примерная, д. 1'
-        },
-    {
-        'id': 2,
-        'title': 'Юридическая консультация по семейным делам',
-        'img_url': 'http://127.0.0.1:9000/flexwork/2.jpeg',
-        'price': '1000',
-        'description': 'Юридическая помощь по вопросам семейного права, включая разводы, опеку, алименты и другие аспекты.',
-        'company': 'ЮрПомощь',
-        'category': 'Юридические услуги',
-        'start_date': datetime.strptime('2024-09-12T09:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'end_date': datetime.strptime('2024-09-20T17:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'address': 'г. Санкт-Петербург, ул. Юридическая, д. 5'
+     {
+        'id': 1,
+        'title': 'Маникюр и педикюр',
+        'img_url': 'http://127.0.0.1:9000/flexwork/1.png',
+        'description': 'Оказание профессиональных услуг маникюра и педикюра, комплексный уход за руками и ногами, создание стильных и современных дизайнов ногтей.',
+        'category': 'Красота и здоровье',
     },
+    
+   {
+            'id': 2,
+            'title': 'Услуги косметолога',
+            'img_url': 'http://127.0.0.1:9000/flexwork/2.jpg',
+            'description': 'Комплексные услуги по уходу за кожей лица и тела, направленные на улучшение состояния кожи и решение конкретных проблем, таких как акне, пигментация, возрастные изменения и сухость кожи.',
+            'category': 'Красота и здоровье',
+        },
+   
     {
         'id': 3,
-        'title': 'Финансовое планирование и консультации',
+        'title': 'Ремонт бытовой техники',
         'img_url': 'http://127.0.0.1:9000/flexwork/3.jpg',
-        'price': '1500',
-        'description': 'Профессиональные услуги по финансовому планированию, инвестициям и управлению личными финансами.',
-        'company': 'ФинансГрупп',
-        'category': 'Финансовые услуги',
-         'start_date': datetime.strptime('2024-09-12T09:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'end_date': datetime.strptime('2024-09-20T17:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'address': 'г. Новосибирск, ул. Финансовая, д. 10'
+        'description': 'Оказание услуг по ремонту бытовой техники на дому с быстрым и качественным решением проблем с техникой.',
+        'category': 'Бытовые услуги',
+  
     },
     {
         'id': 4,
         'title': 'Консультации по медицинским вопросам',
         'img_url': 'http://127.0.0.1:9000/flexwork/4.webp',
-        'price': '800',
+       
         'description': 'Консультации и рекомендации по медицинским вопросам от опытных врачей и специалистов.',
-        'company': 'МедЦентр',
-        'category': 'Медицинские услуги',
-        'start_date': datetime.strptime('2024-09-12T09:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'end_date': datetime.strptime('2024-09-20T17:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'address': 'г. Екатеринбург, ул. Медицинская, д. 12'
+       
+        'category': 'Красота и здоровье',
     },
     {
         'id': 5,
-        'title': 'Курсы по программированию для начинающих',
-        'img_url': 'http://127.0.0.1:9000/flexwork/5.jpg',
-        'price': '2000',
-        'description': 'Обучение основам программирования с нуля. Практические занятия и теоретические знания для старта в IT.',
-        'company': 'IT Академия',
+        'title': 'Репетитор по Английскому языку',
+        'img_url': 'http://127.0.0.1:9000/flexwork/5.png',
+       
+        'description': 'Проведение индивидуальных и групповых занятий по английскому языку для детей, подростков и взрослых. ',
+       
         'category': 'Образование',
-         'start_date': datetime.strptime('2024-09-12T09:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'end_date': datetime.strptime('2024-09-20T17:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'address': 'г. Казань, ул. Академическая, д. 15'
+
+
     },
     {
         'id': 6,
-        'title': 'Профессиональные тренинги по лидерству',
-        'img_url': 'http://127.0.0.1:9000/flexwork/6.png',
-        'price': '2500',
-        'description': 'Интенсивные тренинги по развитию лидерских качеств и управленческих навыков.',
-        'company': 'ЛидерШкола',
-        'category': 'Тренинги',
-         'start_date': datetime.strptime('2024-09-12T09:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'end_date': datetime.strptime('2024-09-20T17:00:00', '%Y-%m-%dT%H:%M:%S'),
-        'address': 'г. Ростов-на-Дону, ул. Лидерская, д. 22'
+        'title': 'Уборка и клининг',
+        'img_url': 'http://127.0.0.1:9000/flexwork/6.webp',
+       
+        'description': 'Предоставление профессиональных услуг по уборке и клинингу жилых и коммерческих помещений с использованием качественных чистящих средств и современного оборудования. Услуги включают как разовые генеральные уборки, так и регулярное поддержание чистоты.',
+        'category': 'Бытовые услуги',
     },
 ]
 
+basket=[ 
+   {
+            'id': 1,
+            'fio': 'Самойловская Екатерина Михайловна',
+            'service_id':1,
+            'main':'main',
+        },
+     {
+            'id': 2,
+            'fio': 'Самойловская Екатерина Михайловна',
+            'service_id':5,
+            'main':'',
+        },
+   
+     {
+            'id': 3,
+            'fio': 'Самойловская Екатерина Михайловна',
+            'service_id':4,
+            'main':'',
+        },
+]
+
+
+def GetName(basket):
+    for item in basket:
+        return item['fio']
+
+
+def GetBasketServices(basket, services):
+    main = 0
+    service_ids = {}
+
+    for item in basket:
+        if item.get('main') == 'main':
+            main = item['service_id']
+        if item['service_id'] not in service_ids:
+            service_ids[item['service_id']] = 1
+        # else:
+        #     service_ids[item['service_id']] += 1
+
+    # Фильтруем услуги, которые есть в корзине
+    basket_services = [service for service in services if service['id'] in service_ids]
+
+    return [basket_services, len(service_ids), main]
+
+
 
 def GetServices(request):
-    if request.method == 'POST':
-        query = request.POST.get('query', '').strip()
+    if request.method == 'GET':
+        query = request.GET.get('selected_services', '').strip()
         if query:
             filtered_services = [
                 service for service in services
-                if query.lower() in service['title'].lower() or query.lower() in service['description'].lower()
+                if query.lower() in service['title'].lower() or query.lower() in service['description'].lower() or query.lower() in service['category'].lower()
             ]
         else:
             filtered_services = services
-        return render(request, 'index.html', {'services': filtered_services})
+        return render(request, 'index.html', {'data' : {
+        'services': filtered_services,
+        'selected_services': query,
+        }})
+    
     else:
-        return render(request, 'index.html', {'services': services})
+       return render(request, 'index.html', {'data' : {
+        'services': services,
+        }})
     
     
 
@@ -105,7 +137,11 @@ def GetService(request, id):
 
 
 def GetBasket(request):
-    
-    context = {'services': services}
-    return render(request, 'basket.html', context)
-
+  # Передаем переменные basket и services в функцию GetBasketServices
+    basket_services, count, main = GetBasketServices(basket, services)
+    return render(request, 'basket.html', {'data': {
+        'fio': GetName(basket),
+        'services': basket_services,
+        'count': count,
+        'main': main,
+    }})

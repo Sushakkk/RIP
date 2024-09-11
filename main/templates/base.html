@@ -37,34 +37,27 @@
     <div class="wrapper">
       <header class="header">
         <div class="header__container _container">
-          <div class="header__logo">flexwork</div>
+          <a  class="header__logo" href="{% url 'main:index' %}">flexwork</a
+        >
           <div class="header__burger">
             <span></span>
           </div>
           <nav class="header__menu menu">
             <ul class="menu__list">
               <li class="menu__item">
-                <a id="MainLink" href="{% url 'main:index' %}" class="menu__link menu__link_active"
+                {% comment %} <a id="MainLink" href="{% url 'main:index' %}" class="menu__link menu__link_active"
                   >Home</a
                 >
-              </li>
-              <li class="menu__item">
+              </li> {% endcomment %}
+              {% comment %} <li class="menu__item">
                 <a id="ServicesLink" href="#services" class="menu__link"
                   >Услуги</a
                 >
               </li>
               <li class="menu__item">
                 <a href="#contacts" class="menu__link">Вход</a>
-              </li>
-              <li class="menu__item">
-                <a href="{% url 'main:basket' %}" class="menu__link">Корзина</a>
-              </li>
-              <a href="{% url 'main:basket' %}">
-                <img
-                  src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
-                  alt="basket"
-                />
-              </a>
+              </li> {% endcomment %}
+              {% comment %} {% block basket %}{% endblock basket %} {% endcomment %}
               
             </ul>
           </nav>
