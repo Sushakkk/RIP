@@ -4,7 +4,8 @@
 .basket__content {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    align-items: center;
+    gap: 50px;
     width: 100%;
     font-size: 20px;
     
@@ -15,10 +16,13 @@
 .basket__title{
     font-size: 36px;
     gap:20px;
-    /* padding-bottom: 10px; */
+    
 
 }
 
+.basket__title-main{
+    font-weight: 600;
+}
 
 .basket__cards{
     display: flex;
@@ -41,7 +45,7 @@
    
     border: 2px solid var(--border);
     padding: 20px 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: var(--base);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 170px;
@@ -71,25 +75,32 @@
 .item-basket__title {
     padding-left: 20px;
     font-weight: bold;
+    
 }
-
+.basket_fio{
+    color: var(--text);
+}
 
 .item-basket__img {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Убирает лишние части изображения */
+    overflow: hidden; 
     min-width: 120px;
     min-height: 70px;
-    /* max-width: 200px;
-    max-height: 100px; */
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    
 }
 
 .item-basket__img img {
+    
     width: 100%;
-    height: auto; /* Сохраняет пропорции изображения */
-    object-fit: contain; /* Изображение сохраняет пропорции и помещается в контейнер */
+    height: auto; 
+    object-fit: cover; 
 }
 .item-basket__price {
 

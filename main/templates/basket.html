@@ -5,11 +5,11 @@
 <div class="page__basket _container">
   <div class="basket__content">
     <div class="basket__title main-block__container-details">
-      <div class="title_main">Деятельности:</div>
+      <div class="basket__title-main ">Деятельности:</div>
       <div class="">{{ data.count }}</div>
     </div>
 
-    <p><span class="basket_fio detail-label">Самозанятый:</span> {{ data.fio }}</p>
+    <p class="basket_fio" ><span class="basket_fio detail-label">Самозанятый:</span> {{ data.fio }}</p>
     <div class="basket__cards">
 
     {% for service in data.services %}
