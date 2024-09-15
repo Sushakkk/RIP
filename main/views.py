@@ -81,6 +81,10 @@ basket=[
 ]
 
 
+
+
+
+
 def GetName(basket):
     for item in basket:
         return item['fio']
@@ -95,11 +99,10 @@ def GetBasketServices(basket, services):
             main = item['service_id']
         if item['service_id'] not in service_ids:
             service_ids[item['service_id']] = 1
-        # else:
-        #     service_ids[item['service_id']] += 1
-
+    
     # Фильтруем услуги, которые есть в корзине
     basket_services = [service for service in services if service['id'] in service_ids]
+
 
     return [basket_services, len(service_ids), main]
 
@@ -107,7 +110,9 @@ def GetBasketServices(basket, services):
 
 def GetServices(request):
     if request.method == 'GET':
-        query = request.GET.get('selected_services', '').strip()
+        query = request.GET.get('selected_service', '').strip()
+        _, count, _ = GetBasketServices(basket, services)
+        
         if query:
             filtered_services = [
                 service for service in services
@@ -115,14 +120,17 @@ def GetServices(request):
             ]
         else:
             filtered_services = services
+            
         return render(request, 'index.html', {'data' : {
         'services': filtered_services,
-        'selected_services': query,
+        'selected_service': query,
+        'count': count,
         }})
     
     else:
        return render(request, 'index.html', {'data' : {
         'services': services,
+        'count': count,
         }})
     
     
@@ -136,9 +144,9 @@ def GetService(request, id):
     return render(request, 'card.html', context)
 
 
-def GetBasket(request):
+def GetBasket(request, count=0):
   # Передаем переменные basket и services в функцию GetBasketServices
-    basket_services, count, main = GetBasketServices(basket, services)
+    basket_services, _, main = GetBasketServices(basket, services)
     return render(request, 'basket.html', {'data': {
         'fio': GetName(basket),
         'services': basket_services,

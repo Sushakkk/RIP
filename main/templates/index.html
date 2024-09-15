@@ -8,24 +8,29 @@
           <div class="search-container">
             <input
               type="text"
-              name="selected_services"
+              name="selected_service"
               placeholder="Поиск"
               class="search-input"
-              value="{{ data.selected_services }}"
+              value="{{ data.selected_service }}"
             />
             <button type="submit" class="search-button">
               <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
             </button>
           </div>
         </form>
-        <a href="{% url 'main:basket' %}">
+
+
+        <a href="{% url 'main:basket' data.count %}">
           <img
           class="basket__img"
             src="http://127.0.0.1:9000/flexwork/cart_b0s8i0gqjxdh 1.svg"
             alt="basket"
           />
         </a>
+        
       </div>
+
+
     <div class="services__cards">
       {% for service in data.services %}
       <div class="services__column">

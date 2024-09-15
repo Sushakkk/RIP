@@ -1,10 +1,10 @@
 
 :root{
     --color_green: rgb(25,187, 41); 
-	--main_color:#249d55; 
+	--main_color:rgb(36, 157, 85); 
     --font: rgb(239,236, 236); 
 	--border: rgba(173, 173, 173, 1);
-	--text: rgb(78, 76, 76);
+	--text: rgb(46, 46, 46);
 	--base: white;
     
 }
