@@ -76,10 +76,15 @@ WSGI_APPLICATION = 'FlexWork.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'FlexWork',
+        'USER': 'student',
+        'PASSWORD': '123',
+        'HOST': 'localhost',  # или другой хост, если база удаленная
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
