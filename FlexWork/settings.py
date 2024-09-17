@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'FlexWork.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FlexWork',
-        'USER': 'student',
-        'PASSWORD': '123',
-        'HOST': 'localhost',  # или другой хост, если база удаленная
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'pgdb',
         'PORT': '5432',
     }
 }
