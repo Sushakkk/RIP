@@ -2,29 +2,29 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# class Orders(models.Model):
-#     STATUS_CHOICES = [
-#         ('draft', 'Черновик'),
-#         ('deleted', 'Удалена'),
-#         ('formed', 'Сформирована'),
-#         ('completed', 'Завершена'),
-#         ('rejected', 'Отклонена'),
-#     ]
+class Orders(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'Черновик'),
+        ('deleted', 'Удалена'),
+        ('formed', 'Сформирована'),
+        ('completed', 'Завершена'),
+        ('rejected', 'Отклонена'),
+    ]
 
-#     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-#     formed_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата формирования")
-#     completed_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата завершения")
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name="Пользователь")
-#     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='draft', verbose_name="Статус")
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    formed_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата формирования")
+    completed_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата завершения")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name="Пользователь")
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='draft', verbose_name="Статус")
 
-#     def __str__(self):
-#         return f"Order {self.id} by {self.user.username}"
+    def __str__(self):
+        return f"Order {self.id} by {self.user.username}"
 
-#     class Meta:
-#         db_table = "orders"
-#         verbose_name = "Заказ"
-#         verbose_name_plural = "Заказы"
-#         ordering = ("id",)
+    class Meta:
+        db_table = "orders"
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+        ordering = ("id",)
 
 
 class Categories(models.Model):
@@ -40,21 +40,21 @@ class Categories(models.Model):
         ordering = ["category"]
 
 
-# class Services(models.Model):
-#     title = models.CharField(max_length=100, verbose_name="Название")
-#     description = models.CharField(max_length=250, verbose_name="Описание")
-#     img_url = models.URLField(verbose_name="URL изображения")
-#     category = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='services', verbose_name="Категория")
-#     status = models.BooleanField(default=True, verbose_name="Доступность")  # TRUE означает, что услуга доступна
+class Services(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название")
+    description = models.CharField(max_length=250, verbose_name="Описание")
+    img_url = models.URLField(verbose_name="URL изображения")
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='services', verbose_name="Категория")
+    status = models.BooleanField(default=True, verbose_name="Доступность")  # TRUE означает, что услуга доступна
 
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return self.title
 
-#     class Meta:
-#         db_table = "services"
-#         verbose_name = "Услуга"
-#         verbose_name_plural = "Услуги"
-#         ordering = ["title"]
+    class Meta:
+        db_table = "services"
+        verbose_name = "Услуга"
+        verbose_name_plural = "Услуги"
+        ordering = ["title"]
 
 
 # class OrdersServices(models.Model):
@@ -73,17 +73,17 @@ class Categories(models.Model):
 #         return f"Order {self.order.id} - Service {self.service.title}"
 
 
-# class Users(models.Model):
-#     fio = models.CharField(max_length=100, verbose_name="ФИО")
-#     login = models.CharField(max_length=100, unique=True, verbose_name="Логин")
-#     password = models.CharField(max_length=100, verbose_name="Пароль")
-#     is_stuff = models.BooleanField(default=True, verbose_name="Сотрудник")
+class Users(models.Model):
+    fio = models.CharField(max_length=100, verbose_name="ФИО")
+    login = models.CharField(max_length=100, unique=True, verbose_name="Логин")
+    password = models.CharField(max_length=100, verbose_name="Пароль")
+    is_stuff = models.BooleanField(default=True, verbose_name="Сотрудник")
 
-#     class Meta:
-#         db_table = 'users'
-#         verbose_name = 'Пользователь'
-#         verbose_name_plural = 'Пользователи'
-#         ordering = ['fio']
+    class Meta:
+        db_table = 'users'
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ['fio']
 
-#     def __str__(self):
-#         return self.fio
+    def __str__(self):
+        return self.fio
