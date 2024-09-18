@@ -102,6 +102,7 @@ def GetBasketServices(basket, services):
     
     # Фильтруем услуги, которые есть в корзине
     basket_services = [service for service in services if service['id'] in service_ids]
+    
 
 
     return [basket_services, len(service_ids), main]
