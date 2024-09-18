@@ -1,5 +1,5 @@
-# from django.db import models
-# from django.contrib.auth.models import User
+from django.db import models
+from django.contrib.auth.models import User
 
 
 # class Orders(models.Model):
@@ -27,17 +27,17 @@
 #         ordering = ("id",)
 
 
-# class Categories(models.Model):
-#     category = models.CharField(max_length=100, verbose_name="Категория")
+class Categories(models.Model):
+    category = models.CharField(max_length=100, verbose_name="Категория")
 
-#     def __str__(self):
-#         return self.category
+    def __str__(self):
+        return self.category
 
-#     class Meta:
-#         db_table = "categories"
-#         verbose_name = "Категория"
-#         verbose_name_plural = "Категории"
-#         ordering = ["category"]
+    class Meta:
+        db_table = "categories"
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ["category"]
 
 
 # class Services(models.Model):
