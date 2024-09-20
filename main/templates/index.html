@@ -8,10 +8,10 @@
           <div class="search-container">
             <input
               type="text"
-              name="selected_service"
+              name="activity"
               placeholder="Поиск"
               class="search-input"
-              value="{{ data.selected_service }}"
+              value="{{ data.activity }}"
             />
             <button type="submit" class="search-button">
               <img src="http://127.0.0.1:9000/flexwork/Group.svg" alt="Search" />
@@ -20,27 +20,33 @@
         </form>
 
 
-        <a href="{% url 'main:basket' data.count %}">
-          <img
-          class="basket__img"
-            src="http://127.0.0.1:9000/flexwork/basket.svg"
-            alt="basket"
-          />
-        </a>
+
+        <a href="{% url 'main:self-employed' %}">
+          <div class="basket-container">
+              <img
+                  class="basket__img"
+                  src="http://127.0.0.1:9000/flexwork/basket.svg"
+                  alt="basket"
+              />
+              <div class="basket_amount">{{data.count}}</div> <!-- Здесь число отображает количество товаров в корзине -->
+          </div>
+      </a>
+      
+
         
       </div>
 
 
     <div class="services__cards">
-      {% for service in data.services %}
+      {% for activity in data.activities %}
       <div class="services__column">
         <div class="services__card item-services">
-          <h3 class="item-service__title">{{ service.title }}</h3>
+          <h3 class="item-service__title">{{ activity.title }}</h3>
           <div class="item-service__img">
-            <img src="{{ service.img_url }}" alt="{{ service.title }}" />
+            <img src="{{ activity.img_url }}" alt="{{ activity.title }}" />
           </div>
           <a
-            href="{% url 'main:service' service.id %}"
+            href="{% url 'main:activity' activity.id %}"
             class="item-service__button button-page"
             >Подробнее</a
           >
