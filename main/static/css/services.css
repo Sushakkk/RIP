@@ -108,14 +108,33 @@
 
 }
 
+
+.basket-container{
+    position: relative;
+}
+
 .basket__img{
     padding: 12px;
     border-radius: 50%;
     background-color: white;
     width: 65px;
     height: 65px;
-    
-   
+
+}
+.basket_amount {
+    position: absolute;
+    top: 0;
+    left: 45px; 
+    background-color: var(--main_color);
+    width: 20px; /* Увеличил размер кружка для наглядности */
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 

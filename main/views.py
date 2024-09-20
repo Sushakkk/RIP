@@ -1,9 +1,9 @@
-# main/views.py
+# importance/views.py
 from django.shortcuts import render
 from datetime import datetime
 
 
-services = [
+activities = [
      {
         'id': 1,
         'title': 'Маникюр и педикюр',
@@ -58,99 +58,98 @@ services = [
     },
 ]
 
-basket=[ 
-   {
+
+
+self_employed= {
+    'fio': 'Самойловская Екатерина Михайловна',
+    'activities':[
+        {
             'id': 1,
-            'fio': 'Самойловская Екатерина Михайловна',
-            'service_id':1,
-            'main':'main',
+            'id_activity':1,
+            'importance': True,
         },
      {
             'id': 2,
-            'fio': 'Самойловская Екатерина Михайловна',
-            'service_id':5,
-            'main':'',
+            'id_activity':5,
+            'importance': False,
         },
    
      {
             'id': 3,
-            'fio': 'Самойловская Екатерина Михайловна',
-            'service_id':4,
-            'main':'',
+            'id_activity':4,
+            'importance':False,
         },
-]
+        
+    ]
+    
+}
 
 
 
 
 
 
-def GetName(basket):
-    for item in basket:
-        return item['fio']
+def GetSelfEmployedActivities(self_employed, activities):
+    importance = 0
+    id_activities = {}
+    self_employed= self_employed['activities']
 
-
-def GetBasketServices(basket, services):
-    main = 0
-    service_ids = {}
-
-    for item in basket:
-        if item.get('main') == 'main':
-            main = item['service_id']
-        if item['service_id'] not in service_ids:
-            service_ids[item['service_id']] = 1
+    for item in self_employed:
+        if item.get('importance') == True:
+            importance = item['id_activity']
+        if item['id_activity'] not in id_activities:
+            id_activities[item['id_activity']] = 1
     
     # Фильтруем услуги, которые есть в корзине
-    basket_services = [service for service in services if service['id'] in service_ids]
+    basket_activities = [service for service in activities if service['id'] in id_activities]
     
 
 
-    return [basket_services, len(service_ids), main]
+    return [basket_activities, len(id_activities), importance]
 
 
 
-def GetServices(request):
+def GetActivities(request):
     if request.method == 'GET':
-        query = request.GET.get('selected_service', '').strip()
-        _, count, _ = GetBasketServices(basket, services)
+        query = request.GET.get('activity', '').strip()
+        _, count, _ = GetSelfEmployedActivities(self_employed, activities)
         
         if query:
-            filtered_services = [
-                service for service in services
+            filtered_activities = [
+                service for service in activities
                 if query.lower() in service['title'].lower() or query.lower() in service['description'].lower() or query.lower() in service['category'].lower()
             ]
         else:
-            filtered_services = services
+            filtered_activities = activities
             
         return render(request, 'index.html', {'data' : {
-        'services': filtered_services,
-        'selected_service': query,
+        'activities': filtered_activities,
+        'activity': query,
         'count': count,
         }})
     
     else:
        return render(request, 'index.html', {'data' : {
-        'services': services,
+        'activities': activities,
         'count': count,
         }})
     
     
 
-def GetService(request, id):
-    service = next((item for item in services if item['id'] == id), None)
-    if service is None:
+def GetActivity(request, id):
+    activity = next((item for item in activities if item['id'] == id), None)
+    if activity is None:
         # Обработка случая, когда услуга не найдена
         return render(request, '404.html', status=404)
-    context = {'service': service}
+    context = {'service': activity}
     return render(request, 'card.html', context)
 
 
-def GetBasket(request, count=0):
-  # Передаем переменные basket и services в функцию GetBasketServices
-    basket_services, _, main = GetBasketServices(basket, services)
+def GetSelfEmployed(request, count=0):
+
+    basket_activities, _, importance = GetSelfEmployedActivities(self_employed, activities)
     return render(request, 'basket.html', {'data': {
-        'fio': GetName(basket),
-        'services': basket_services,
+        'activities': basket_activities,
         'count': count,
-        'main': main,
+        'importance': importance,
     }})
