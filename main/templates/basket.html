@@ -11,7 +11,7 @@
     <div>{{ data.self_employed.id }}</div>
 
     {% if data.activities|length > 0 %}
-      <form method="post" action="self-employed/{{ data.self_employed.id }}/">
+      <form method="post" action="{{ data.self_employed.id }}/">
         {% csrf_token %}
         <button class="main-block__button button-page" type="submit">
           Удалить

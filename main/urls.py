@@ -11,6 +11,13 @@ urlpatterns = [
     path('activity/<int:activity_id>/add_activity/', add_activity),
     
     
-    path('self-employed/', views.GetSelfEmployed, name='self-employed'),  
-    path('self-employed/self-employed/<int:self_employed_id>/',delete_self_employed),  
+    path('self-employed/', views.GetSelfEmployed, name='self-employed'),
+    # path('self-employed/', views.GetSelfEmployed, name='self-employed'),
+    
+    
+    
+    
+    
+      
+    path('self-employed/<int:self_employed_id>/',delete_self_employed),  
 ]

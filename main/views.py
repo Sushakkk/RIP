@@ -95,13 +95,15 @@ def get_current_user():
     
     
 def GetSelfEmployed(request, self_employed_id=0):
-    
- 
     current_user = get_current_user()
     
+    # Инициализируем переменную self_employed значением None
+    self_employed = None
+    activities_data = []
+
     try:
-        # Получаем самозанятого для текущего пользователя
-        self_employed = SelfEmployed.objects.get(user=current_user,  status='draft')
+        # Получаем самозанятого для текущего пользователя со статусом 'draft'
+        self_employed = SelfEmployed.objects.get(user=current_user, status='draft')
 
         # Получаем все связанные активности через промежуточную таблицу
         activities_with_importance = SelfEmployedActivities.objects.filter(self_employed=self_employed).select_related('activity')
@@ -115,16 +117,14 @@ def GetSelfEmployed(request, self_employed_id=0):
             for item in activities_with_importance
         ]
 
-
     except SelfEmployed.DoesNotExist:
-        # Если самозанятый не найден
-        activities_data = []
-
+        # Если самозанятый не найден, activities_data останется пустым
+        pass
 
     # Возвращаем данные в шаблон
     return render(request, 'basket.html', {
         'data': {
-            'self_employed':self_employed,
+            'self_employed': self_employed,
             'activities': activities_data,
         }
     })
@@ -132,11 +132,7 @@ def GetSelfEmployed(request, self_employed_id=0):
 
 
 
-# def current_request(request):
-#     user = request.user
-#     self_employed_request = get_object_or_404(SelfEmployed, user=user, status='draft')
-#     activities = self_employed_request.activities.all()
-#     return render(request, 'current_request.html', {'request': self_employed_request, 'activities': activities})
+
 
 
 def delete_self_employed(request, self_employed_id):
