@@ -94,13 +94,14 @@ def get_current_user():
     
     
     
-def GetSelfEmployed(request):
+def GetSelfEmployed(request, self_employed_id=0):
+    
  
     current_user = get_current_user()
     
     try:
         # Получаем самозанятого для текущего пользователя
-        self_employed = SelfEmployed.objects.get(user=current_user)
+        self_employed = SelfEmployed.objects.get(user=current_user,  status='draft')
 
         # Получаем все связанные активности через промежуточную таблицу
         activities_with_importance = SelfEmployedActivities.objects.filter(self_employed=self_employed).select_related('activity')
@@ -138,8 +139,40 @@ def GetSelfEmployed(request):
 #     return render(request, 'current_request.html', {'request': self_employed_request, 'activities': activities})
 
 
-# def delete_self_employed(request, self_employed_id):
-#     with connection.cursor() as cursor:
-#         cursor.execute("UPDATE self_employed status = 'deleted' WHERE id = %s", [self_employed_id])
+def delete_self_employed(request, self_employed_id):
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE self_employed SET status = 'deleted' WHERE id = %s", [self_employed_id])
 
-#     return redirect("/")
+    current_user = get_current_user()
+    
+    # Инициализируем переменную self_employed значением None
+    self_employed = None
+    activities_data = []
+
+    try:
+        # Получаем самозанятого для текущего пользователя со статусом 'draft'
+        self_employed = SelfEmployed.objects.get(user=current_user, status='draft')
+
+        # Получаем все связанные активности через промежуточную таблицу
+        activities_with_importance = SelfEmployedActivities.objects.filter(self_employed=self_employed).select_related('activity')
+
+        # Формируем список активностей с полем importance
+        activities_data = [
+            {
+                'activity': item.activity,  # Активность
+                'importance': item.importance  # Значение поля importance
+            }
+            for item in activities_with_importance
+        ]
+
+    except SelfEmployed.DoesNotExist:
+        # Если самозанятый не найден, activities_data останется пустым
+        pass
+
+    # Возвращаем данные в шаблон
+    return render(request, 'basket.html', {
+        'data': {
+            'self_employed': self_employed,
+            'activities': activities_data,
+        }
+    })
