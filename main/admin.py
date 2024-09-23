@@ -1,10 +1,6 @@
-# from django.contrib import admin
+from django.contrib import admin
+from .models import SelfEmployed, Activities, SelfEmployedActivities
 
-# from .models import Orders, Categories, Services
-# from .models import  Categories
-
-# admin.site.register(Orders)
-# admin.site.register(Categories)
-# admin.site.register(Services)
-# admin.site.register(OrdersServices)
-
+admin.site.register(SelfEmployed)
+admin.site.register(Activities)
+admin.site.register(SelfEmployedActivities)

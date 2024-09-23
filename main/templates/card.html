@@ -18,7 +18,14 @@
                 </div>
                 <p><span class="detail-label">Категория:</span> {{ service.category }}</p>
             </div>
-            {% comment %} <button class="main-block__button button-page">В Корзину</button> {% endcomment %}
+            
+          {% comment %} <form method="post" action="activity/{{activity.id}}/add_activity/">
+            {% csrf_token %}
+            <button class="main-block__button button-page" type="submit">
+                Добавить
+            </button>
+        </form> {% endcomment %}
+
 
         </div>
     </div>

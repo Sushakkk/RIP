@@ -1,0 +1,1 @@
+[{"model": "main.selfemployedactivities", "pk": 1, "fields": {"self_employed": 1, "activity": 3, "importance": false}}, {"model": "main.selfemployedactivities", "pk": 2, "fields": {"self_employed": 1, "activity": 4, "importance": false}}]

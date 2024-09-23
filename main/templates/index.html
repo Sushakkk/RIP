@@ -50,6 +50,15 @@
             class="item-service__button button-page"
             >Подробнее</a
           >
+
+          <form method="post" action="activity/{{activity.id}}/add_activity/">
+            {% csrf_token %}
+            <button class="main-block__button button-page" type="submit">
+                Добавить
+            </button>
+        </form>
+        
+
         </div>
       </div>
       {% endfor %}

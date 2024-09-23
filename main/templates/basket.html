@@ -6,22 +6,36 @@
   <div class="basket__content">
     <div class="basket__title main-block__container-details">
       <div class="basket__title-main ">Самозанятый</div>
+  
+      
+
     </div>
 
+      {% comment %} <div class=" ">{{data.activities}}</div> {% endcomment %}
+
     {% comment %} <p class="basket_fio" ><span class="basket_fio detail-label">Самозанятый:</span> {{ data.fio }}</p> {% endcomment %}
+
+
+    {% comment %} <form method="post" action="self-employed/{{data.self_employed}}}/delete/">
+      {% csrf_token %}
+            <button class="main-block__button button-page" type="submit">
+                Удалить
+            </button>
+  </form>  {% endcomment %}
+
     <div class="basket__cards">
 
-    {% for activity in data.activities %}
+   {% for activity in data.activities %}
    
     <div class="basket__row">
         <div class="basket__card item-basket">
           <div class="item-basket__img">
-            <img src="{{ activity.img_url }}" alt="{{ activity.title }}" />
+            <img src="{{ activity.activity.img_url }}" alt="{{ activity.activity.title }}" />
           </div>
-          <h3 class="item-basket__title">{{ activity.title }}</h3>
+          <h3 class="item-basket__title">{{ activity.activity.title }}</h3>
   
           
-          {% if activity.id == data.importance %}
+          {% if activity.importance %}
           <img
             class="basket__img"
             src="http://127.0.0.1:9000/flexwork/main_service.svg"
@@ -33,7 +47,7 @@
   
           <div class="item-basket__price-button">
             <a
-              href="{% url 'main:activity' activity.id %}"
+              href="{% url 'main:activity' activity.activity.id %}"
               class="item-basket__button button-page"
               >Подробнее</a
             >
@@ -41,7 +55,7 @@
         </div>
       </div>
    
-    {% endfor %}
+    {% endfor %} 
 </div>
   </div>
 </div>

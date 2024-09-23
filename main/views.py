@@ -1,155 +1,145 @@
-# importance/views.py
-from django.shortcuts import render
-from datetime import datetime
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from .models import Activities, SelfEmployedActivities, SelfEmployed
 
-
-activities = [
-     {
-        'id': 1,
-        'title': 'Маникюр и педикюр',
-        'img_url': 'http://127.0.0.1:9000/flexwork/1.png',
-        'description': 'Оказание профессиональных услуг маникюра и педикюра, комплексный уход за руками и ногами, создание стильных и современных дизайнов ногтей.',
-        'category': 'Красота и здоровье',
-    },
-    
-   {
-            'id': 2,
-            'title': 'Услуги косметолога',
-            'img_url': 'http://127.0.0.1:9000/flexwork/2.jpg',
-            'description': 'Комплексные услуги по уходу за кожей лица и тела, направленные на улучшение состояния кожи и решение конкретных проблем, таких как акне, пигментация, возрастные изменения и сухость кожи.',
-            'category': 'Красота и здоровье',
-        },
-   
-    {
-        'id': 3,
-        'title': 'Ремонт бытовой техники',
-        'img_url': 'http://127.0.0.1:9000/flexwork/3.jpg',
-        'description': 'Оказание услуг по ремонту бытовой техники на дому с быстрым и качественным решением проблем с техникой.',
-        'category': 'Бытовые услуги',
-  
-    },
-    {
-        'id': 4,
-        'title': 'Консультации по медицинским вопросам',
-        'img_url': 'http://127.0.0.1:9000/flexwork/4.webp',
-       
-        'description': 'Консультации и рекомендации по медицинским вопросам от опытных врачей и специалистов.',
-       
-        'category': 'Красота и здоровье',
-    },
-    {
-        'id': 5,
-        'title': 'Репетитор по Английскому языку',
-        'img_url': 'http://127.0.0.1:9000/flexwork/5.png',
-       
-        'description': 'Проведение индивидуальных и групповых занятий по английскому языку для детей, подростков и взрослых. ',
-       
-        'category': 'Образование',
-
-
-    },
-    {
-        'id': 6,
-        'title': 'Уборка и клининг',
-        'img_url': 'http://127.0.0.1:9000/flexwork/6.webp',
-       
-        'description': 'Предоставление профессиональных услуг по уборке и клинингу жилых и коммерческих помещений с использованием качественных чистящих средств и современного оборудования. Услуги включают как разовые генеральные уборки, так и регулярное поддержание чистоты.',
-        'category': 'Бытовые услуги',
-    },
-]
-
-
-
-self_employed= {
-    'fio': 'Самойловская Екатерина Михайловна',
-    'activities':[
-        {
-            'id': 1,
-            'id_activity':1,
-            'importance': True,
-        },
-     {
-            'id': 2,
-            'id_activity':5,
-            'importance': False,
-        },
-   
-     {
-            'id': 3,
-            'id_activity':4,
-            'importance':False,
-        },
-        
-    ]
-    
-}
-
-
-
-
-
-
-def GetSelfEmployedActivities(self_employed, activities):
-    importance = 0
-    id_activities = {}
-    self_employed= self_employed['activities']
-
-    for item in self_employed:
-        if item.get('importance') == True:
-            importance = item['id_activity']
-        if item['id_activity'] not in id_activities:
-            id_activities[item['id_activity']] = 1
-    
-    # Фильтруем услуги, которые есть в корзине
-    basket_activities = [service for service in activities if service['id'] in id_activities]
-    
-
-
-    return [basket_activities, len(id_activities), importance]
+from django.contrib.auth.models import User
+from django.db import connection
+from django.utils import timezone
 
 
 
 def GetActivities(request):
-    if request.method == 'GET':
-        query = request.GET.get('activity', '').strip()
-        _, count, _ = GetSelfEmployedActivities(self_employed, activities)
-        
-        if query:
-            filtered_activities = [
-                service for service in activities
-                if query.lower() in service['title'].lower() or query.lower() in service['description'].lower() or query.lower() in service['category'].lower()
-            ]
-        else:
-            filtered_activities = activities
-            
-        return render(request, 'index.html', {'data' : {
+    activities = Activities.objects.filter(status='active')
+    query = request.GET.get('activity', '').strip()
+
+    # Получаем корзину
+    self_employed = get_self_employed()
+
+    if self_employed is not None:
+        basket_activities = self_employed.activities.all()
+        count = basket_activities.count()  # Считаем количество активностей
+    else:
+        basket_activities = Activities.objects.none()  # Если черновика нет
+        count = 0
+
+    if query:
+        filtered_activities = [
+            activity for activity in activities
+            if (query.lower() in activity.title.lower() or
+                query.lower() in activity.description.lower() or
+                query.lower() in activity.category.lower())
+        ]
+    else:
+        filtered_activities = activities
+
+    return render(request, 'index.html', {'data': {
         'activities': filtered_activities,
         'activity': query,
         'count': count,
-        }})
-    
-    else:
-       return render(request, 'index.html', {'data' : {
-        'activities': activities,
-        'count': count,
-        }})
-    
-    
+    }})
+
+
+
 
 def GetActivity(request, id):
-    activity = next((item for item in activities if item['id'] == id), None)
-    if activity is None:
-        # Обработка случая, когда услуга не найдена
-        return render(request, '404.html', status=404)
+    activity = get_object_or_404(Activities, id=id, status='active')
     context = {'service': activity}
     return render(request, 'card.html', context)
 
 
-def GetSelfEmployed(request, count=0):
 
-    basket_activities, _, importance = GetSelfEmployedActivities(self_employed, activities)
-    return render(request, 'basket.html', {'data': {
-        'activities': basket_activities,
-        'count': count,
-        'importance': importance,
-    }})
+
+    
+def add_activity(request, activity_id):
+    # Получаем активность по ID
+    activity = get_object_or_404(Activities, pk=activity_id)
+    self_employed = get_self_employed()
+
+    # Если черновика нет, создаем новый
+    if self_employed is None:
+        current_user = get_current_user()
+        self_employed = SelfEmployed.objects.create(
+            user=current_user,  # Указываем пользователя
+            status='draft'
+        )
+
+    # Проверяем, существует ли уже такая связь
+    if SelfEmployedActivities.objects.filter(self_employed=self_employed, activity=activity).exists():
+        return redirect("/")
+
+    # Создаем новую запись о деятельности самозанятого
+    item = SelfEmployedActivities(
+        self_employed=self_employed,
+        activity=activity
+    )
+    item.save()
+
+    return redirect("/")
+
+
+
+
+
+def get_self_employed():
+    return SelfEmployed.objects.filter(status='draft').first()  # Получаем первый черновик
+
+def get_current_user():
+    return User.objects.filter(is_superuser=False).first()  # Получаем текущего пользователя, исключая суперпользователя
+    
+    
+    
+    
+    
+    
+    
+    
+    
+def GetSelfEmployed(request):
+ 
+    current_user = get_current_user()
+    
+    try:
+        # Получаем самозанятого для текущего пользователя
+        self_employed = SelfEmployed.objects.get(user=current_user)
+
+        # Получаем все связанные активности через промежуточную таблицу
+        activities_with_importance = SelfEmployedActivities.objects.filter(self_employed=self_employed).select_related('activity')
+
+        # Формируем список активностей с полем importance
+        activities_data = [
+            {
+                'activity': item.activity,  # Активность
+                'importance': item.importance  # Значение поля importance
+            }
+            for item in activities_with_importance
+        ]
+
+
+    except SelfEmployed.DoesNotExist:
+        # Если самозанятый не найден
+        activities_data = []
+
+
+    # Возвращаем данные в шаблон
+    return render(request, 'basket.html', {
+        'data': {
+            'self_employed':self_employed,
+            'activities': activities_data,
+        }
+    })
+
+
+
+
+# def current_request(request):
+#     user = request.user
+#     self_employed_request = get_object_or_404(SelfEmployed, user=user, status='draft')
+#     activities = self_employed_request.activities.all()
+#     return render(request, 'current_request.html', {'request': self_employed_request, 'activities': activities})
+
+
+# def delete_self_employed(request, self_employed_id):
+#     with connection.cursor() as cursor:
+#         cursor.execute("UPDATE self_employed status = 'deleted' WHERE id = %s", [self_employed_id])
+
+#     return redirect("/")
