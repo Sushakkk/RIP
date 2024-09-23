@@ -77,9 +77,16 @@
     font-weight: 500;
 
 }
+
+.item-service_buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
 .item-service__button {
    
 }
+
 
 .button-page{
 
@@ -95,7 +102,16 @@
      flex-wrap: nowrap;
      cursor: pointer;
      font-size: 1.125rem;
-    
+
+}
+
+
+
+
+.main-block__button__add{
+    padding: 7px 14px;
+    border-radius: 50%;
+    background-color: var(--main_color);
 
 }
 
