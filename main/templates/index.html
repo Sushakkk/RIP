@@ -19,18 +19,21 @@
           </div>
         </form>
 
-
-
-        <a href="{% url 'main:self-employed' %}">
-          <div class="basket-container">
-              <img
-                  class="basket__img"
-                  src="http://127.0.0.1:9000/flexwork/basket.svg"
-                  alt="basket"
-              />
-              <div class="basket_amount">{{data.count}}</div> <!-- Здесь число отображает количество товаров в корзине -->
-          </div>
-      </a>
+        <div class="basket-container">
+          {% if data.count != 0 %}
+              <a href="{% url 'main:self-employed' data.self_employed.id %}">
+          {% endif %}
+                  <img
+                      class="basket__img"
+                      src="http://127.0.0.1:9000/flexwork/basket.svg"
+                      alt="basket"
+                  />
+                  <div class="basket_amount">{{ data.count }}</div>
+          {% if data.count != 0 %}
+              </a>
+          {% endif %}
+      </div>
+      
       
 
         

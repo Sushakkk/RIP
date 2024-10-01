@@ -16,10 +16,10 @@ def GetActivities(request):
     self_employed = get_self_employed()
 
     if self_employed is not None:
-        basket_activities = self_employed.activities.all()
-        count = basket_activities.count()  # Считаем количество активностей
+        self_employed_activities = self_employed.activities.all()
+        count = self_employed_activities.count()  # Считаем количество активностей
     else:
-        basket_activities = Activities.objects.none()  # Если черновика нет
+        self_employed_activities = Activities.objects.none()  # Если черновика нет
         count = 0
 
     if query:
@@ -36,6 +36,7 @@ def GetActivities(request):
         'activities': filtered_activities,
         'activity': query,
         'count': count,
+        'self_employed': self_employed,
     }})
 
 
@@ -97,6 +98,8 @@ def get_self_employed_activities():
     try:
         # Получаем самозанятого для текущего пользователя со статусом 'draft'
         self_employed = SelfEmployed.objects.get(user=current_user, status='draft')
+        
+       
 
         # Получаем все связанные активности через промежуточную таблицу
         activities_with_importance = SelfEmployedActivities.objects.filter(self_employed=self_employed).select_related('activity')
@@ -114,11 +117,13 @@ def get_self_employed_activities():
         # Если самозанятый не найден, activities_data останется пустым
         pass
 
-    # Возвращаем данные в шаблон
+    #
     return {
         'data': {
             'self_employed': self_employed,
             'activities': activities_data,
+
+            
         }
     }
     

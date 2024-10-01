@@ -70,6 +70,8 @@
     padding-top: 10px;
     height: auto;
     min-height: 50px;
+/* 
+    text-transform: uppercase; */
 }
 .item-service__price{
     margin-bottom: 10px;
@@ -112,6 +114,7 @@
     padding: 7px 14px;
     border-radius: 50%;
     background-color: var(--main_color);
+    color: white;
 
 }
 

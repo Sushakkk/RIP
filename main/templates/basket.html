@@ -6,12 +6,15 @@
   <div class="basket__content">
     <div class="basket__title main-block__container-details">
       <div class="basket__title-main">Самозанятый</div>
+
     </div>
+    <div class="basket__title-fio">{{ data.self_employed.user.last_name }} {{ data.self_employed.user.first_name }}</div>
+   
 
   
 
     {% if data.activities|length > 0 %}
-      <form method="post" action="{{ data.self_employed.id }}/">
+      <form method="post" action="{{ data.self_employed.id }}/delete/">
         {% csrf_token %}
         <button class="main-block__button button-page" type="submit">
           Удалить
