@@ -9,10 +9,11 @@ class SelfEmployed(models.Model):
         ('completed', 'Завершена'),
         ('rejected', 'Отклонена'),
     ]
-
+    fio = models.CharField(max_length=100, verbose_name="ФИО", default='Не указано')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    modification_date = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
+    modification_date = models.DateTimeField(auto_now=True,blank=True, verbose_name="Дата изменения")
     completion_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата завершения")
+    
     
     # Связь с пользователем (самозанятым)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="self_employed_user", verbose_name="Пользователь")
@@ -29,6 +30,15 @@ class SelfEmployed(models.Model):
     )
 
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='draft', verbose_name="Статус")
+    
+    def save(self, *args, **kwargs):
+        # Если FIO не указано, присваиваем его как комбинацию first_name и last_name пользователя
+        if not self.fio or self.fio == 'Не указано':
+            self.fio = f"{self.user.last_name} {self.user.first_name}".strip()
+        
+        super(SelfEmployed, self).save(*args, **kwargs)
+
+    
 
     def __str__(self):
         return f"Самозанятый {self.id} - {self.user.username}"
@@ -74,8 +84,7 @@ class SelfEmployedActivities(models.Model):
         verbose_name = "Деятельности Самозанятого"
         verbose_name_plural = "Деятельности Самозанятых"
         ordering = ("id",)
-        unique_together = ('self_employed', 'activity')  # Составной уникальный ключ
-
+        
     def __str__(self):
         return f"{self.self_employed} - {self.activity.title} (Главная: {self.importance})"
 
