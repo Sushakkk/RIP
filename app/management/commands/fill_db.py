@@ -13,8 +13,8 @@ def add_users():
     # Создание пользователей из твоих данных
     User.objects.create_superuser("admin", "root@root.com", "1")
     User.objects.create_user(username="sushakkk", first_name="Ксения", last_name="Карпова", password="789451ksenia")
-    User.objects.create_user(username="moderator1", first_name="Мария", last_name="Гостюнина", password="789451ksenia")
-    User.objects.create_user(username="moderator2", first_name="Вензель", last_name="Малиновый", password="789451ksenia")
+    User.objects.create_user(username="moderator1", first_name="Мария", last_name="Гостюнина", password="789451ksenia", is_stuff='true')
+    User.objects.create_user(username="moderator2", first_name="Вензель", last_name="Малиновый", password="789451ksenia", is_stuff='true')
     # User.objects.create_user(username="user1", first_name="user1", last_name="user1", password="789451ksenia")
     # User.objects.create_user(username="user2", first_name="user2", last_name="user2", password="789451ksenia")
 

@@ -54,6 +54,7 @@ services:
       - 127.0.0.1:5050:80
     restart: unless-stopped
 
+
   minio:
     hostname: minio/minio:latest
     image: quay.io/minio/minio:RELEASE.2022-10-15T19-57-03Z
@@ -112,6 +113,6 @@ services:
       - REDIS_DATABASES=16
 
 volumes:
-  pgdbdata: null
+  pgdbdata: 
   pgadmin:
   minio-data:

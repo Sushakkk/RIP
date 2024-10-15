@@ -23,19 +23,10 @@ from .utils import identity_user
 
 
 
-# # Определяем параметры для Swagger
-# category_param = openapi.Parameter(
-#     'category',  # имя параметра
-#     openapi.IN_QUERY,  # указываем, что это параметр в URL
-#     type=openapi.TYPE_STRING,  # тип данных
-#     required=False,  # параметр не обязателен
-#     description='Категория для фильтрации активностей'  # описание параметра
-# )
-
-# @swagger_auto_schema(method='get', manual_parameters=[category_param])
-
-
-
+@swagger_auto_schema(method='get', 
+                     manual_parameters=[
+                         openapi.Parameter('category', openapi.IN_QUERY, description="Фильтр по категории", type=openapi.TYPE_STRING)
+                     ])
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_activities(request):
@@ -48,18 +39,22 @@ def get_activities(request):
     category = request.query_params.get('category')
 
     if category:
-        activities = Activities.objects.filter(category__iexact=category)
+        activities = Activities.objects.filter(category__iexact=category, status='active')
     else:
-        activities = Activities.objects.all()
+        activities = Activities.objects.filter( status='active')
 
     serializer = ActivitiesSerializer(activities, many=True)
 
     self_employed_drafts = SelfEmployed.objects.filter(user_id=user.id, status='draft')
 
-    if not self_employed_drafts.exists():
-        return Response({"message": "У пользователя нет черновиков самозанятых."}, status=status.HTTP_404_NOT_FOUND)
-
     first_draft = self_employed_drafts.first()
+
+    if first_draft is None:
+        return Response({
+            "activities": serializer.data,
+            "self_employed_id": None,  # Установить id в null
+            "activity_count": 0  # Можно указать 0, так как черновиков нет
+        }, status=status.HTTP_200_OK)
 
     activity_count = SelfEmployedActivities.objects.filter(self_employed=first_draft).count()
     
@@ -68,6 +63,7 @@ def get_activities(request):
         "self_employed_id": first_draft.id,
         "activity_count": activity_count
     }, status=status.HTTP_200_OK)
+
 
 
 
@@ -92,7 +88,16 @@ def get_activity_by_id(request, activity_id):
 
 
 
-
+@swagger_auto_schema(method='put', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'title': openapi.Schema(type=openapi.TYPE_STRING, description="Название деятельности"),
+        'description': openapi.Schema(type=openapi.TYPE_STRING, description="Описание деятельности"),
+        'category': openapi.Schema(type=openapi.TYPE_STRING, description="Категория деятельности"),
+        'pic': openapi.Schema(type=openapi.TYPE_FILE, description="Изображение для деятельности"),
+    },
+    required=['title', 'description', 'category']  # Укажите обязательные поля
+))
 @api_view(["PUT"])
 @permission_classes([IsModerator])
 def update_activity(request, activity_id):
@@ -115,7 +120,16 @@ def update_activity(request, activity_id):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
+@swagger_auto_schema(method='post', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'title': openapi.Schema(type=openapi.TYPE_STRING, description="Название деятельности"),
+        'description': openapi.Schema(type=openapi.TYPE_STRING, description="Описание деятельности"),
+        'category': openapi.Schema(type=openapi.TYPE_STRING, description="Категория деятельности"),
+        'pic': openapi.Schema(type=openapi.TYPE_FILE, description="Изображение для деятельности"),
+    },
+    required=['title', 'description', 'category']  # Укажите обязательные поля
+))
 @api_view(["POST"])
 @permission_classes([IsModerator])
 def create_activity(request):
@@ -252,7 +266,13 @@ def add_activity(request, activity_id):
 
 
 
-
+@swagger_auto_schema(method='post', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'pic': openapi.Schema(type=openapi.TYPE_FILE, description="Изображение для деятельности"),
+    },
+    required=['pic']  # Укажите обязательные поля
+))
 @api_view(["POST"])
 @permission_classes([IsModerator])
 def update_activity_image(request, activity_id):
@@ -546,7 +566,13 @@ def update_by_creator(request, self_employed_id):
 
 
 
-
+@swagger_auto_schema(method='put', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'status': openapi.Schema(type=openapi.TYPE_STRING, enum=["completed", "rejected", "draft", "formed"]),
+    },
+    required=['status']
+))
 @api_view(["PUT"])
 @permission_classes([IsModerator])
 def update_by_moderator(request, self_employed_id):
@@ -560,7 +586,7 @@ def update_by_moderator(request, self_employed_id):
     # Проверка обязательных полей
     required_fields = ['status']
     for field in required_fields:
-        if field not in request.GET:
+        if field not in request.data:
             return Response({"error": f"Поле '{field}' обязательно"}, status=status.HTTP_400_BAD_REQUEST)
         
  
@@ -570,7 +596,7 @@ def update_by_moderator(request, self_employed_id):
    
     # Обновление полей
     self_employed.moderator = identity_user(request)
-    self_employed.status = request.GET['status']
+    self_employed.status = request.data["status"]
     
     
     # Установка текущей даты завершения, если статус "завершено" или "отклонено"
