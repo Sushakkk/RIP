@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import random
 
 class SelfEmployed(models.Model):
     STATUS_CHOICES = [
@@ -10,6 +11,7 @@ class SelfEmployed(models.Model):
         ('rejected', 'Отклонена'),
     ]
     fio = models.CharField(max_length=100, verbose_name="ФИО", default='Не указано')
+    INN = models.CharField(max_length=100, verbose_name="ИНН", default='Отсутствует')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     modification_date = models.DateTimeField(auto_now=True,blank=True, verbose_name="Дата изменения")
     completion_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата завершения")
@@ -35,6 +37,8 @@ class SelfEmployed(models.Model):
         # Если FIO не указано, присваиваем его как комбинацию first_name и last_name пользователя
         if not self.fio or self.fio == 'Не указано':
             self.fio = f"{self.user.last_name} {self.user.first_name}".strip()
+        if self.status == 'completed' and not self.INN:
+            self.INN = random.randint(100000000000, 999999999999)
         
         super(SelfEmployed, self).save(*args, **kwargs)
 

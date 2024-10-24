@@ -20,7 +20,7 @@ services:
   migration:
     build: .
     container_name: migration
-    command: bash -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py flush --no-input && python manage.py fill_db"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py fill_db"
     volumes:
       - ./:/usr/src/app
     depends_on:

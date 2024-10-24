@@ -28,12 +28,11 @@ from .utils import identity_user
                          openapi.Parameter('category', openapi.IN_QUERY, description="Фильтр по категории", type=openapi.TYPE_STRING)
                      ])
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
 def get_activities(request):
     user = identity_user(request)
 
-    if user is None:
-        return Response({"error": "Пользователь не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+
 
     # Получаем категорию из параметров запроса
     category = request.query_params.get('category')
@@ -44,12 +43,12 @@ def get_activities(request):
         activities = Activities.objects.filter( status='active')
 
     serializer = ActivitiesSerializer(activities, many=True)
+    
+    if user:
+        self_employed_drafts = SelfEmployed.objects.filter(user_id=user.id, status='draft')
+        first_draft = self_employed_drafts.first()
 
-    self_employed_drafts = SelfEmployed.objects.filter(user_id=user.id, status='draft')
-
-    first_draft = self_employed_drafts.first()
-
-    if first_draft is None:
+    if user is None:
         return Response({
             "activities": serializer.data,
             "self_employed_id": None,  # Установить id в null
@@ -118,6 +117,14 @@ def update_activity(request, activity_id):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
 
 
 @swagger_auto_schema(method='post', request_body=openapi.Schema(
@@ -211,19 +218,18 @@ def add_activity(request, activity_id):
     
     
     
-    # draft_self_employed = get_draft_self_employed(request)
-    
     user = identity_user(request)
 
     if user is None:
         return None
 
-    self_employed = SelfEmployed.objects.filter(user=user).filter(status='draft').first()
+
 
 
     # Проверяем, существует ли уже самозанятый для данного пользователя
     self_employed, created = SelfEmployed.objects.get_or_create(
         user=user,
+        status='draft',
         defaults={
             'status': 'draft',  # Устанавливаем статус на черновик
             'created_date': timezone.now()
@@ -321,11 +327,19 @@ def login(request):
 
     serializer = UserSerializer(user)
 
-    response = Response(serializer.data, status=status.HTTP_201_CREATED)
+    # Добавляем access_token в тело ответа
+    response_data = {
+        "user": serializer.data,
+        "access_token": access_token
+    }
 
+    response = Response(response_data, status=status.HTTP_201_CREATED)
+
+    # Ставим cookie для токена
     response.set_cookie('access_token', access_token, httponly=True)
 
     return response
+
 
 
 @swagger_auto_schema(method='post', request_body=UserRegisterSerializer)
@@ -357,7 +371,7 @@ def logout(request):
     if access_token not in cache:
         cache.set(access_token, settings.JWT["ACCESS_TOKEN_LIFETIME"])
 
-    return Response(status=status.HTTP_200_OK)
+    return Response({"message": "Пользователь вышел."},status=status.HTTP_200_OK)
 
 
 @swagger_auto_schema(method='PUT', request_body=UserSerializer)
