@@ -253,7 +253,7 @@ def add_activity(request, activity_id):
     activities_with_importance = []
     for self_employed_activity in self_employed_activities:
         activity = self_employed_activity.activity  # Получаем связанную активность
-        activity_data = ActivitiesSerializer(activity).data  # Сериализуем активность
+        activity_data = ActivitiesForSE(activity).data  # Сериализуем активность
         
         # Добавляем поле importance из SelfEmployedActivities
         activity_data['importance'] = self_employed_activity.importance  
@@ -461,7 +461,7 @@ def get_self_employed_by_id(request, self_employed_id):
     activities_with_importance = []
     for self_employed_activity in self_employed_activities:
         activity = self_employed_activity.activity  # Получаем связанную активность
-        activity_data = ActivitiesSerializer(activity).data  # Сериализуем активность
+        activity_data = ActivitiesForSE(activity).data  # Сериализуем активность
         
         # Добавляем поле importance из SelfEmployedActivities
         activity_data['importance'] = self_employed_activity.importance  
@@ -536,37 +536,14 @@ def update_by_creator(request, self_employed_id):
     except SelfEmployed.DoesNotExist:
         return Response({"error": "Самозанятый не найден"}, status=status.HTTP_404_NOT_FOUND)
     
-    moderator_id = request.GET.get('moderator') or request.data.get('moderator') or 3
-
-    # Проверяем, что ID пользователя и модератора были переданы
-    try:
-        moderator = User.objects.get(pk=moderator_id) if moderator_id else None
-    except User.DoesNotExist:
-        return Response({"error": "модератор не найден"}, status=status.HTTP_404_NOT_FOUND)
-
-   
-    if moderator:
-        self_employed.moderator = moderator
-
-    # Проверка обязательных полей у самозанятого
-    if  not self_employed.moderator:
-        return Response({"error": "Поле 'moderator' обязательно"}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Получаем новое значение статуса из запроса (GET или POST)
-    status_value = request.GET.get('status') or request.data.get('status') 
-    if not status_value:
-        return Response({"error": "Поле 'status' обязательно"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Проверяем, не завершена ли уже заявка
     if self_employed.status == 'completed':
         return Response({"error": "Заявка уже завершена"}, status=status.HTTP_400_BAD_REQUEST)
 
     # Обновляем статус
-    self_employed.status = status_value
+    self_employed.status = 'formed'
 
-    # Установка текущей даты завершения, если статус "completed"
-    if status_value == 'completed':
-        self_employed.completion_date = timezone.now()
 
     # Сохраняем изменения
     self_employed.save()

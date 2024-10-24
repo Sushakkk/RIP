@@ -8,7 +8,7 @@ class SelfEmployedSerializer(serializers.ModelSerializer):
     moderator_username = serializers.CharField(source='moderator.username', read_only=True)
     class Meta:
         model = SelfEmployed
-        fields = ['id', 'user_username', 'fio', 'created_date', 'modification_date', 'completion_date', 'moderator_username', 'status']
+        fields = ['id', 'user_username', 'fio','inn', 'created_date', 'modification_date', 'completion_date', 'moderator_username', 'status']
 
     def get_user_username(self, obj):
         return obj.user.username  # Возвращаем username вместо user_id
@@ -19,6 +19,11 @@ class ActivitiesSerializer(serializers.ModelSerializer):
         model = Activities
         fields = '__all__'
 
+
+class ActivitiesForSE(serializers.ModelSerializer):
+    class Meta:
+        model = Activities
+        fields = ['id', 'title', 'img_url']
 
 
 class SelfEmployedActivitiesSerializer(serializers.ModelSerializer):
