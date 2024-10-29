@@ -11,6 +11,8 @@ from .permissions import *
 from .serializers import *
 from .utils import identity_user
 
+from django.db.models import Q
+
 
 
 
@@ -400,35 +402,62 @@ def update_user(request, user_id):
 
 
 
-
+@swagger_auto_schema(
+    method='get',
+    manual_parameters=[
+        openapi.Parameter('status', openapi.IN_QUERY, description="Статус", type=openapi.TYPE_STRING),
+        openapi.Parameter('start_date', openapi.IN_QUERY, description="Начальная дата", type=openapi.TYPE_STRING),
+        openapi.Parameter('end_date', openapi.IN_QUERY, description="Конечная дата", type=openapi.TYPE_STRING),
+    ]
+)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def search_self_employed(request):
-    # Инициализация переменной self_employed
-    self_employed = SelfEmployed.objects.all()  # Получение всех самозанятых
+    # Инициализация queryset для SelfEmployed
+    self_employed = SelfEmployed.objects.all()
 
-    # Получаем статус из запроса
-    status_value = request.data.get('status')
+    # Получаем параметры статуса и диапазона дат из запроса
+    status_value = request.query_params.get('status')
+    start_date = request.query_params.get('start_date')
+    end_date = request.query_params.get('end_date')
 
-    # Исключаем записи со статусами 'deleted' и 'draft'
+    # Исключение записей со статусами 'deleted' и 'draft'
     if status_value in ['deleted', 'draft']:
         return Response({"error": "Невозможно получить данные с этим статусом"}, status=status.HTTP_404_NOT_FOUND)
 
-    user = identity_user(request)
-    if not user.is_staff:
-        self_employed = self_employed.filter(user=user)  # Фильтруем по пользователю, если не администратор
-
+    # Фильтрация по статусу, если он передан
     if status_value:
-        # Если передан массив статусов
-        if isinstance(status_value, list):
-            self_employed = self_employed.filter(status__in=status_value)
-        else:
-            # Если передан один статус
-            self_employed = self_employed.filter(status=status_value)
+        self_employed = self_employed.filter(status=status_value)
 
-    # Исключаем удаленные и черновики, если статусы не переданы
-    self_employed = self_employed.exclude(status__in=['deleted', 'draft']).order_by('created_date')
+    # Фильтрация по диапазону дат создания
+    date_filter = Q()  # Инициализация пустого фильтра
 
+    # Фильтрация по начальной дате, если она указана
+    if start_date:
+        parsed_start_date = parse_datetime(start_date)
+        if parsed_start_date:
+            date_filter &= Q(created_date__gte=parsed_start_date)
+
+    # Фильтрация по конечной дате, если она указана
+    if end_date:
+        parsed_end_date = parse_datetime(end_date)
+        if parsed_end_date:
+            date_filter &= Q(created_date__lte=parsed_end_date)
+
+    # Применение фильтрации по дате, если она существует
+    if date_filter:
+        self_employed = self_employed.filter(date_filter)
+
+    # Исключаем записи со статусами 'deleted' и 'draft', если статус не указан
+    self_employed = self_employed.exclude(status__in=['deleted', 'draft'])
+
+    # Ограничение для обычных пользователей (не администраторов)
+    user = request.user
+    if not user.is_staff:
+        self_employed = self_employed.filter(user=user)
+
+    # Упорядочиваем данные по дате создания и применяем сериализацию
+    self_employed = self_employed.order_by('created_date')
     serializer = SelfEmployedSerializer(self_employed, many=True)
 
     resp = {
