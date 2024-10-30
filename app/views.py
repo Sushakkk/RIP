@@ -27,20 +27,16 @@ from django.db.models import Q
 
 @swagger_auto_schema(method='get', 
                      manual_parameters=[
-                         openapi.Parameter('category', openapi.IN_QUERY, description="Фильтр по категории", type=openapi.TYPE_STRING)
+                         openapi.Parameter('title', openapi.IN_QUERY, description="Фильтр по title", type=openapi.TYPE_STRING)
                      ])
 @api_view(["GET"])
 def get_activities(request):
     user = identity_user(request)
+    
+    title = request.query_params.get('title')
 
-
-
-
-    # Получаем категорию из параметров запроса
-    category = request.query_params.get('category')
-
-    if category:
-        activities = Activities.objects.filter(category__iexact=category, status='active')
+    if title:
+        activities = Activities.objects.filter(title__icontains=title, status='active')
     else:
         activities = Activities.objects.filter( status='active')
 
