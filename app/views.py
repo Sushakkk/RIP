@@ -667,8 +667,8 @@ def update_importance(request, s_e_id, a_id):
     activity_id= a_id
     user = identity_user(request)
     
-    if not SelfEmployed.objects.get(pk=self_employed_id, user=user) :
-        return Response({"error": "Self-employed not found"}, status=status.HTTP_404_NOT_FOUND)
+    # if not SelfEmployed.objects.get(pk=self_employed_id, user=user) :
+    #     return Response({"error": "Self-employed not found"}, status=status.HTTP_404_NOT_FOUND)
 
    
     # Проверяем, существует ли связь между самозанятым и активностью
@@ -731,8 +731,8 @@ def delete_self_employed_activity(request, s_e_id, a_id):
     activity_id= a_id
     
     user = identity_user(request)
-    if not SelfEmployed.objects.get(pk=self_employed_id, user=user) :
-        return Response({"error": "Self-employed not found"}, status=status.HTTP_404_NOT_FOUND)
+    # if not SelfEmployed.objects.get(pk=self_employed_id, user=user) :
+    #     return Response({"error": "Self-employed not found"}, status=status.HTTP_404_NOT_FOUND)
     
     
     item = SelfEmployedActivities.objects.filter(self_employed_id=self_employed_id, activity_id=activity_id).first()
